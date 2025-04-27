@@ -10,6 +10,8 @@ The Dockerfile contains everything you need to bulid the image; it runs npm inst
 docker build -t hello-node
 ```
 
+Tip: Although we could add to our .nix files the work of building the docker image, we chose not to because we wanted to isolate our examples and focus only on registering the service.
+
 ## Now register it as a system service
 
 System-manager takes care of everything, and we've included two .nix files to do the work for you. From the root, simply run:
