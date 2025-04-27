@@ -16,7 +16,6 @@
         serviceConfig = {
           Type = "simple";
           Restart = "always";
-          # ExecStartPre = "-/bin/sh -c '/usr/bin/docker kill hello-node-container && /usr/bin/docker rm -v hello-node-container'";
           ExecStart = "/usr/bin/docker run --name hello-node-container -p 3000:3000 hello-node:latest";
           ExecStop = "/usr/bin/docker stop hello-node-container";
         };

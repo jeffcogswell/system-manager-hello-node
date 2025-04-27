@@ -28,3 +28,54 @@ http://localhost:3000
 
 and you should see "Hello, Node!"
 
+# The Two .nix Files
+
+There are two .nix files:
+
+* **flake.nix** in the root
+* **default.nix** in the Modules folder
+
+The first one is configured to make use of system-manager with the following lines:
+
+```
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    system-manager = {
+      url = "github:numtide/system-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+```
+
+It also registers the modules folder:
+
+```
+  outputs = { self, flake-utils, nixpkgs, system-manager }: {
+    systemConfigs.default = system-manager.lib.makeSystemConfig {
+      modules = [
+        ./modules
+      ];
+    };
+  };
+```
+
+Inside the modules folder is the default.nix file, which contains the configuration information necessary for systemd:
+
+```
+    systemd.services = {
+      hello-node = {
+        enable = true;
+        description = "Hello node.js docker container";
+        after = [ "network.target" "docker.service" ];
+        serviceConfig = {
+          Type = "simple";
+          Restart = "always";
+          ExecStart = "/usr/bin/docker run --name hello-node-container -p 3000:3000 hello-node:latest";
+          ExecStop = "/usr/bin/docker stop hello-node-container";
+        };
+        wantedBy = [ "multi-user.target" ];
+      };
+    };
+```
+
