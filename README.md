@@ -14,9 +14,10 @@ Tip: Although we could add to our .nix files the work of building the docker ima
 
 ## Now register it as a system service
 
-System-manager takes care of everything, and we've included two .nix files to do the work for you. From the root, simply run:
+System-manager takes care of everything, and we've included two .nix files to do the work for you. From the root folder, drop into a root shell and simply run:
 
 ```
+sudo bash
 nix run 'github:numtide/system-manager' -- switch --flake '.'
 ```
 
